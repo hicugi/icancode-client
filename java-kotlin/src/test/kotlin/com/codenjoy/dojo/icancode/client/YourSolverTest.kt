@@ -1,11 +1,3 @@
-package com.codenjoy.dojo.icancode.client
-
-import com.codenjoy.dojo.client.Direction
-import com.codenjoy.dojo.client.Solver
-import org.junit.Before
-import org.junit.Test
-import kotlin.test.assertEquals
-
 /*-
  * #%L
  * iCanCode - it's a dojo-like platform from developers to developers.
@@ -28,13 +20,21 @@ import kotlin.test.assertEquals
  * #L%
  */
 
+package com.codenjoy.dojo.icancode.client
 
-class YourKotlinSolverTest() {
+import com.codenjoy.dojo.common.client.Solver
+import com.codenjoy.dojo.common.services.Direction
+import com.codenjoy.dojo.common.services.RandomDice
+import org.junit.Before
+import org.junit.Test
+import kotlin.test.assertEquals
+
+class YourKotlinSolverTest {
     private var ai: Solver<Board>? = null
 
     @Before
     fun setup() {
-        ai = YourKotlinSolver()
+        ai = YourKotlinSolver(RandomDice())
     }
 
     private fun board(layer1: String, layer2: String): Board {
@@ -190,7 +190,7 @@ class YourKotlinSolverTest() {
 
     private fun assertL(layer1: String, layer2: String, expected: Direction?) {
         val actual = ai!!.get(board(layer1, layer2))
-        val expectedString = if (expected != null) expected.toString() else ""
+        val expectedString = expected?.toString() ?: ""
         assertEquals(expectedString, actual)
     }
 }

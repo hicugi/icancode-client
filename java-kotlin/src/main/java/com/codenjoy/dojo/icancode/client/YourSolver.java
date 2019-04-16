@@ -1,27 +1,26 @@
+/*-
+ * #%L
+ * iCanCode - it's a dojo-like platform from developers to developers.
+ * %%
+ * Copyright (C) 2018 Codenjoy
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
 package com.codenjoy.dojo.icancode.client;
-
-        /*-
-         * #%L
-         * iCanCode - it's a dojo-like platform from developers to developers.
-         * %%
-         * Copyright (C) 2018 Codenjoy
-         * %%
-         * This program is free software: you can redistribute it and/or modify
-         * it under the terms of the GNU General Public License as
-         * published by the Free Software Foundation, either version 3 of the
-         * License, or (at your option) any later version.
-         *
-         * This program is distributed in the hope that it will be useful,
-         * but WITHOUT ANY WARRANTY; without even the implied warranty of
-         * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-         * GNU General Public License for more details.
-         *
-         * You should have received a copy of the GNU General Public
-         * License along with this program.  If not, see
-         * <http://www.gnu.org/licenses/gpl-3.0.html>.
-         * #L%
-         */
-
 
 import com.codenjoy.dojo.common.services.Dice;
 import com.codenjoy.dojo.common.services.Point;
@@ -33,12 +32,18 @@ import java.util.List;
  * Your AI
  */
 public class YourSolver extends AbstractSolver {
+    // paste here board page url from browser after registration
+    private static final String CONNECTION_URL = "http://localhost:8080/codenjoy-contest/board/player/2bkbcyqz4af73addp7e6?code=8114855158616289483";
 
-    /**
-     * @param dice DIP (SOLID) for Random dependency in your Solver realization
-     */
     public YourSolver(Dice dice) {
         super(dice);
+    }
+
+    /**
+     * Run this method for connect to Server
+     */
+    public static void main(String[] args) {
+        connectClient(CONNECTION_URL, new YourSolver(new RandomDice()));
     }
 
     /**
@@ -58,14 +63,4 @@ public class YourSolver extends AbstractSolver {
         return Command.jump();
     }
 
-    /**
-     * Run this method for connect to Server
-     */
-    public static void main(String[] args) {
-        connectClient(
-                // paste here board page url from browser after registration
-                "http://localhost:8080/codenjoy-contest/board/player/c0ywnb548pcblyu8by3e?code=2590247211311743899",
-                // and solver here
-                new YourSolver(new RandomDice()));
-    }
 }

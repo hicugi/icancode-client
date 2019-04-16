@@ -1,5 +1,3 @@
-package com.codenjoy.dojo.icancode.client
-
 /*-
  * #%L
  * iCanCode - it's a dojo-like platform from developers to developers.
@@ -22,9 +20,20 @@ package com.codenjoy.dojo.icancode.client
  * #L%
  */
 
+package com.codenjoy.dojo.icancode.client
 
 import com.codenjoy.dojo.common.services.Dice
 import com.codenjoy.dojo.common.services.RandomDice
+
+// paste here board page url from browser after registration
+const val CONNECTION_URL = "http://localhost:8080/codenjoy-contest/board/player/2bkbcyqz4af73addp7e6?code=8114855158616289483"
+
+/**
+ * Run this method for connect to the server and start the game
+ */
+fun main(args: Array<String>) {
+    AbstractSolver.connectClient(CONNECTION_URL, YourKotlinSolver(RandomDice()))
+}
 
 /**
  * Your AI
@@ -32,7 +41,7 @@ import com.codenjoy.dojo.common.services.RandomDice
 class YourKotlinSolver : AbstractSolver {
 
     constructor(dice: Dice) : super(dice) {
-        this.dice = dice;
+        this.dice = dice
     }
 
     override fun whatToDo(board: Board): Command {
@@ -48,14 +57,4 @@ class YourKotlinSolver : AbstractSolver {
             return Command.jump()
         }
     }
-}
-/**
- * Run this method for connect to the server and start the game
- */
-fun main(args: Array<String>) {
-    AbstractSolver.connectClient(
-            // paste here board page url from browser after registration
-            "http://localhost:8080/codenjoy-contest/board/player/y4czoxlry883wape55ql?code=5636182293488878774",
-            // and solver here
-            YourKotlinSolver(RandomDice()))
 }
