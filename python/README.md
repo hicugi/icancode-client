@@ -24,6 +24,6 @@ Installation
     
 4. After registering in ICanCode server copy host, username and code from browser's address bar into `handler.py` related variables
 3. Your code should be implemented in `handler.py` 
-4. To start your bot `python main.py`
+4. To start your bot `python -u main.py`
 5. See api docs `http://${DOJOSERVER}/codenjoy-contest/resources/icancode/landing-icancode-contest.html`
 
