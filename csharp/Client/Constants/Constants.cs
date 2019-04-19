@@ -45,9 +45,9 @@
             BoardCell.ROBO_OTHER_FLYING_ON_BOX
         };
         public static readonly BoardCell[] Holes = {
-            BoardCell.BOX,
-            BoardCell.ROBO_FLYING_ON_BOX,
-            BoardCell.ROBO_OTHER_FLYING_ON_BOX
+            BoardCell.HOLE,
+            BoardCell.ROBO_FALLING,
+            BoardCell.ROBO_OTHER_FALLING
         };
         public static readonly BoardCell[] Exits = {
             BoardCell.EXIT
