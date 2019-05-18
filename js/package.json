@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "I Can Code JS client",
   "main": "your-solver.js",
-
   "dependencies": {
     "websocket": "^1.0.28"
   }
