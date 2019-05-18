@@ -33,7 +33,7 @@ client.connect(
 function whatToDo(boardStr) {
   let board = new Board(boardStr);
   console.log(board.toString());
-  return "ACT(1)";
+  return Command.goRight();
 }
 
 const Layers = { LAYER1: 0, LAYER2: 1 };
@@ -47,72 +47,72 @@ class Element {
 
 const Elements = {
   // empty space where player can go
-  EMPTY: new Element(Layers.LAYER2, "-"),
-  FLOOR: new Element(Layers.LAYER1, "."),
+  EMPTY: { layer: Layers.LAYER2, char: "-" },
+  FLOOR: { layer: Layers.LAYER1, char: "." },
 
   // walls
-  ANGLE_IN_LEFT: new Element(Layers.LAYER1, "╔"),
-  WALL_FRONT: new Element(Layers.LAYER1, "═"),
-  ANGLE_IN_RIGHT: new Element(Layers.LAYER1, "┐"),
-  WALL_RIGHT: new Element(Layers.LAYER1, "│"),
-  ANGLE_BACK_RIGHT: new Element(Layers.LAYER1, "┘"),
-  WALL_BACK: new Element(Layers.LAYER1, "─"),
-  ANGLE_BACK_LEFT: new Element(Layers.LAYER1, "└"),
-  WALL_LEFT: new Element(Layers.LAYER1, "║"),
-  WALL_BACK_ANGLE_LEFT: new Element(Layers.LAYER1, "┌"),
-  WALL_BACK_ANGLE_RIGHT: new Element(Layers.LAYER1, "╗"),
-  ANGLE_OUT_RIGHT: new Element(Layers.LAYER1, "╝"),
-  ANGLE_OUT_LEFT: new Element(Layers.LAYER1, "╚"),
-  SPACE: new Element(Layers.LAYER1, " "),
+  ANGLE_IN_LEFT: { layer: Layers.LAYER1, char: "╔" },
+  WALL_FRONT: { layer: Layers.LAYER1, char: "═" },
+  ANGLE_IN_RIGHT: { layer: Layers.LAYER1, char: "┐" },
+  WALL_RIGHT: { layer: Layers.LAYER1, char: "│" },
+  ANGLE_BACK_RIGHT: { layer: Layers.LAYER1, char: "┘" },
+  WALL_BACK: { layer: Layers.LAYER1, char: "─" },
+  ANGLE_BACK_LEFT: { layer: Layers.LAYER1, char: "└" },
+  WALL_LEFT: { layer: Layers.LAYER1, char: "║" },
+  WALL_BACK_ANGLE_LEFT: { layer: Layers.LAYER1, char: "┌" },
+  WALL_BACK_ANGLE_RIGHT: { layer: Layers.LAYER1, char: "╗" },
+  ANGLE_OUT_RIGHT: { layer: Layers.LAYER1, char: "╝" },
+  ANGLE_OUT_LEFT: { layer: Layers.LAYER1, char: "╚" },
+  SPACE: { layer: Layers.LAYER1, char: " " },
 
   // laser machine
-  LASER_MACHINE_CHARGING_LEFT: new Element(Layers.LAYER1, "˂"),
-  LASER_MACHINE_CHARGING_RIGHT: new Element(Layers.LAYER1, "˃"),
-  LASER_MACHINE_CHARGING_UP: new Element(Layers.LAYER1, "˄"),
-  LASER_MACHINE_CHARGING_DOWN: new Element(Layers.LAYER1, "˅"),
+  LASER_MACHINE_CHARGING_LEFT: { layer: Layers.LAYER1, char: "˂" },
+  LASER_MACHINE_CHARGING_RIGHT: { layer: Layers.LAYER1, char: "˃" },
+  LASER_MACHINE_CHARGING_UP: { layer: Layers.LAYER1, char: "˄" },
+  LASER_MACHINE_CHARGING_DOWN: { layer: Layers.LAYER1, char: "˅" },
 
   // lase machine ready
-  LASER_MACHINE_READY_LEFT: new Element(Layers.LAYER1, "◄"),
-  LASER_MACHINE_READY_RIGHT: new Element(Layers.LAYER1, "►"),
-  LASER_MACHINE_READY_UP: new Element(Layers.LAYER1, "▲"),
-  LASER_MACHINE_READY_DOWN: new Element(Layers.LAYER1, "▼"),
+  LASER_MACHINE_READY_LEFT: { layer: Layers.LAYER1, char: "◄" },
+  LASER_MACHINE_READY_RIGHT: { layer: Layers.LAYER1, char: "►" },
+  LASER_MACHINE_READY_UP: { layer: Layers.LAYER1, char: "▲" },
+  LASER_MACHINE_READY_DOWN: { layer: Layers.LAYER1, char: "▼" },
 
   // other stuff
-  START: new Element(Layers.LAYER1, "S"),
-  EXIT: new Element(Layers.LAYER1, "E"),
-  HOLE: new Element(Layers.LAYER1, "O"),
-  BOX: new Element(Layers.LAYER2, "B"),
-  ZOMBIE_START: new Element(Layers.LAYER1, "Z"),
-  GOLD: new Element(Layers.LAYER1, "$"),
+  START: { layer: Layers.LAYER1, char: "S" },
+  EXIT: { layer: Layers.LAYER1, char: "E" },
+  HOLE: { layer: Layers.LAYER1, char: "O" },
+  BOX: { layer: Layers.LAYER2, char: "B" },
+  ZOMBIE_START: { layer: Layers.LAYER1, char: "Z" },
+  GOLD: { layer: Layers.LAYER1, char: "$" },
 
   // your robot
-  ROBO: new Element(Layers.LAYER2, "☺"),
-  ROBO_FALLING: new Element(Layers.LAYER2, "o"),
-  ROBO_FLYING: new Element(Layers.LAYER2, "*"),
-  ROBO_FLYING_ON_BOX: new Element(Layers.LAYER2, "№"),
-  ROBO_LASER: new Element(Layers.LAYER2, "☻"),
+  ROBO: { layer: Layers.LAYER2, char: "☺" },
+  ROBO_FALLING: { layer: Layers.LAYER2, char: "o" },
+  ROBO_FLYING: { layer: Layers.LAYER2, char: "*" },
+  ROBO_FLYING_ON_BOX: { layer: Layers.LAYER2, char: "№" },
+  ROBO_LASER: { layer: Layers.LAYER2, char: "☻" },
 
   // other robot
-  ROBO_OTHER: new Element(Layers.LAYER2, "X"),
-  ROBO_OTHER_FALLING: new Element(Layers.LAYER2, "x"),
-  ROBO_OTHER_FLYING: new Element(Layers.LAYER2, "^"),
-  ROBO_OTHER_FLYING_ON_BOX: new Element(Layers.LAYER2, "%"),
-  ROBO_OTHER_LASER: new Element(Layers.LAYER2, "&"),
+  ROBO_OTHER: { layer: Layers.LAYER2, char: "X" },
+  ROBO_OTHER_FALLING: { layer: Layers.LAYER2, char: "x" },
+  ROBO_OTHER_FLYING: { layer: Layers.LAYER2, char: "^" },
+  ROBO_OTHER_FLYING_ON_BOX: { layer: Layers.LAYER2, char: "%" },
+  ROBO_OTHER_LASER: { layer: Layers.LAYER2, char: "&" },
 
   // laser
-  LASER_LEFT: new Element(Layers.LAYER2, "←"),
-  LASER_RIGHT: new Element(Layers.LAYER2, "→"),
-  LASER_UP: new Element(Layers.LAYER2, "↑"),
-  LASER_DOWN: new Element(Layers.LAYER2, "↓"),
+  LASER_LEFT: { layer: Layers.LAYER2, char: "←" },
+  LASER_RIGHT: { layer: Layers.LAYER2, char: "→" },
+  LASER_UP: { layer: Layers.LAYER2, char: "↑" },
+  LASER_DOWN: { layer: Layers.LAYER2, char: "↓" },
 
   // zombie
-  FEMALE_ZOMBIE: new Element(Layers.LAYER2, "♀"),
-  MALE_ZOMBIE: new Element(Layers.LAYER2, "♂"),
-  ZOMBIE_DIE: new Element(Layers.LAYER2, "✝"),
+  FEMALE_ZOMBIE: { layer: Layers.LAYER2, char: "♀" },
+  MALE_ZOMBIE: { layer: Layers.LAYER2, char: "♂" },
+  ZOMBIE_DIE: { layer: Layers.LAYER2, char: "✝" },
 
   // system elements, don't touch it
-  FOG: new Element(Layers.LAYER1, "F"),
-  BACKGROUND: new Element(Layers.LAYER2, "G")
+  FOG: { layer: Layers.LAYER1, char: "F" },
+  BACKGROUND: { layer: Layers.LAYER2, char: "G" }
 };
 
 const Walls = [
@@ -143,16 +143,26 @@ const Direction = {
 const Command = {
   // Says to Robot do nothing
   DO_NOTHING: () => "",
+
   // Reset current level
   DIE: () => "ACT(0)",
+
   // Says to Robot jump to direction
   JUMP_TO: direction => `ACT(1),${direction}`,
+
   // Says to Robot pull box on this direction
   PULL_TO: direction => `ACT(2),${direction}`,
+
   //Says to Robot jump in place
   JUMP: () => "ACT(1)",
+
   //Says to Robot go to direction
-  GO: direction => `${direction}`
+  GO: direction => `${direction}`,
+
+  goUp: () => "UP",
+  goRight: () => "RIGHT",
+  goDown: () => "DOWN",
+  goLeft: () => "LEFT"
 };
 
 class Point {
@@ -183,7 +193,7 @@ class Point {
 
   isOutOf(dx, dy, size) {
     return (
-      this.x < dx || this.y < dy || this.y > size - 1 - dy || x > size - 1 - dx
+      this.x < dx || this.y < dy || this.y > size - 1 - dy || dx > size - 1 - dx
     );
   }
 }
@@ -210,23 +220,12 @@ class Board {
       }
     }
 
-    console.log(this.field);
-
     for (let i = 0; i < boardArray.length; ++i) {
       board = boardArray[i].replace("\n", "");
 
       for (let y = 0; y < this.size; y++) {
         let dy = y * this.size;
         for (let x = 0; x < this.size; x++) {
-          console.log(
-            "i = " +
-              i +
-              ", x = " +
-              this.inversionX(x) +
-              ", y = " +
-              this.inversionY(y)
-          );
-
           this.field[i][this.inversionX(x)][this.inversionY(y)] = board.charAt(
             dy + x
           );
@@ -243,66 +242,90 @@ class Board {
     return this.size - 1 - y;
   }
 
+  getXYFromPoint(point) {
+    return Object.entries(point)
+      .map(item => item.join(""))
+      .join(", ");
+  }
   toString() {
     let temp = "0123456789012345678901234567890";
     let layer1 = this.boardAsString(Layers.LAYER1).split("\n");
     let layer2 = this.boardAsString(Layers.LAYER2).split("\n");
 
     let numbers = temp.substring(0, layer1.length);
-    let space = "".padStart(layer1.length - 5, " ");
+    let space = " ".repeat(layer1.length - 5);
     let numbersLine = numbers + "   " + numbers;
     let firstPart = " Layer1 " + space + " Layer2\n " + numbersLine;
 
-    let result = "";
+    console.log("numbers", numbers);
 
+    const elements = {
+      0: "Robots",
+      1: "Gold",
+      2: "Starts",
+      3: "Exits",
+      4: "Boxes",
+      5: "Holes",
+      6: "Laser Machines",
+      7: "Lasers"
+    };
+
+    const result = [];
     for (let i = 0; i < layer1.length; ++i) {
       let ii = this.size - 1 - i;
       let index = (ii < 10 ? " " : "") + ii;
-      result = +(
-        index +
-        layer1[i] +
-        " " +
-        index +
-        this.maskOverlay(layer2[i], layer1[i])
-      );
+
+      const element = elements[i];
+      if (!element) continue;
+
+      let value = "undefined";
 
       switch (i) {
-        case 0:
-          result =
-            +" Robots: " +
-            this.getMe() +
-            ", " +
-            this.getOtherHeroes().join(",");
+        case 0: {
+          value = [
+            this.getXYFromPoint(this.getMe()),
+            this.getOtherHeroes().join(",")
+          ].join(", ");
           break;
-        case 1:
-          result = +" Gold: " + this.getGold().join(",");
+        }
+        case 1: {
+          value = this.getXYFromPoint(this.getGold());
           break;
-        case 2:
-          result = +" Starts: " + this.getStarts().join(",");
+        }
+        case 2: {
+          value = this.getStarts()
+            .map(item => this.getXYFromPoint(item))
+            .join("; ");
           break;
-        case 3:
-          result = +" Exits: " + this.getExits().join(",");
+        }
+        case 3: {
+          value = this.getExits()
+            .map(item => this.getXYFromPoint(item))
+            .join("; ");
           break;
-        case 4:
-          result = +" Boxes: " + this.getBoxes().join(",");
+        }
+        case 4: {
+          value = this.getXYFromPoint(this.getBoxes());
           break;
-        case 5:
-          result = +" Holes: " + this.getHoles().join(",");
+        }
+        case 5: {
+          value = this.getXYFromPoint(this.getHoles());
           break;
-        case 6:
-          result = +" Laser Machines: " + this.getLaserMachines().join(",");
+        }
+        case 6: {
+          value = this.getXYFromPoint(this.getLaserMachines());
           break;
-        case 7:
-          result = +" Lasers: " + this.getLasers().join(",");
+        }
+        case 7: {
+          value = this.getXYFromPoint(this.getLasers());
           break;
+        }
       }
 
-      if (i !== layer1.length - 1) {
-        result = +"\n";
-      }
+      result.push(`${element}: ${value}`);
     }
 
-    return firstPart + "\n" + result + "\n" + numbersLine;
+    return firstPart + "\n" + result.join("\n") + "\n" + numbersLine;
   }
 
   getMe() {
@@ -313,7 +336,6 @@ class Board {
       Elements.ROBO_LASER,
       Elements.ROBO
     ]);
-
     if (Array.isArray(result) && result.length) {
       return result[0];
     }
@@ -409,12 +431,12 @@ class Board {
   maskOverlay(source, mask) {
     let result = "";
     for (let i = 0; i < source.length; ++i) {
-      let element = mask.charAt(i);
+      let element = mask[i];
 
       if (this.isWall(element)) {
-        result = +element;
+        result += element;
       } else {
-        result = +source.charAt(i);
+        result += source.charAt(i);
       }
     }
     return result;
@@ -430,14 +452,18 @@ class Board {
   }
 
   get(layer, elements) {
-    let result = [];
+    const result = [];
+
     for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
-        for (let element in elements) {
-          if (this.field[layer][x][y] === element.char) {
-            result.push(new Point(x, y));
-          }
-        }
+        let fieldElement = this.field[layer][x][y];
+
+        elements.forEach(element => {
+          if (fieldElement !== element.char) return;
+
+          const point = new Point(x, y, this.size);
+          result.push(point);
+        });
       }
     }
     return result;
@@ -488,13 +514,14 @@ class Board {
   }
 
   boardAsString(numLayer) {
-    let result = "";
+    let result = [];
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
-        result += this.field[numLayer][this.inversionX(x)][this.inversionY(y)];
+        result.push(
+          this.field[numLayer][this.inversionY(y)][this.inversionX(x)]
+        );
       }
-      result += "\n";
     }
-    return result;
+    return result.join("\n");
   }
 }
