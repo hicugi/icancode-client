@@ -230,7 +230,7 @@ class Board {
       for (let y = 0; y < this.size; y++) {
         let dy = y * this.size;
         for (let x = 0; x < this.size; x++) {
-          this.field[i][this.inversionX(x)][this.inversionY(y)] = board.charAt(
+          this.field[i][this.inversionY(y)][this.inversionX(x)] = board.charAt(
             dy + x
           );
         }
@@ -315,7 +315,9 @@ class Board {
           break;
         }
         case 5: {
-          value = this.getXYFromPoint(this.getHoles());
+          value = this.getHoles()
+            .map(item => this.getXYFromPoint(item))
+            .join("; ");
           break;
         }
         case 6: {
@@ -349,7 +351,22 @@ class Board {
   }
 
   getAction() {
-    return this.getExits();
+    const me = this.getMe();
+
+    const directions = {
+      left: [me.x - 1, me.y],
+      right: [me.x + 1, me.y],
+      top: [me.x, me.y - 1],
+      bottom: [me.x, me.y + 1]
+    };
+    const possibleDireactions = {};
+
+    Object.entries(directions).forEach(([side, [x, y]]) => {
+      if (this.isWallOnXY(x, y)) return;
+      possibleDireactions[side] = this.field[Layers.LAYER1][x][y];
+    });
+
+    return [possibleDireactions, this.getExits()];
   }
 
   getOtherHeroes() {
@@ -385,7 +402,10 @@ class Board {
   }
 
   getWalls() {
-    return this.get(Layers.LAYER1, [
+    return this.get(Layers.LAYER1, this.getWallElements());
+  }
+  getWallElements() {
+    return [
       Elements.ANGLE_IN_LEFT,
       Elements.WALL_FRONT,
       Elements.ANGLE_IN_RIGHT,
@@ -399,7 +419,11 @@ class Board {
       Elements.ANGLE_OUT_RIGHT,
       Elements.ANGLE_OUT_LEFT,
       Elements.SPACE
-    ]);
+    ];
+  }
+  isWallOnXY(x, y) {
+    const wallChar = this.getFieldChar(Layers.LAYER1, x, y);
+    return this.getWallElements().some(item => item.char === wallChar);
   }
 
   getBoxes() {
@@ -461,12 +485,13 @@ class Board {
     return false;
   }
 
+  // get elements pints
   get(layer, elements) {
     const result = [];
 
     for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
-        let fieldElement = this.field[layer][x][y];
+        let fieldElement = this.getFieldChar(layer, x, y);
 
         elements.forEach(element => {
           if (fieldElement !== element.char) return;
@@ -477,6 +502,9 @@ class Board {
       }
     }
     return result;
+  }
+  getFieldChar(layer, x, y) {
+    return this.field[layer][x][y];
   }
 
   isHoleAt(x, y) {
@@ -528,7 +556,7 @@ class Board {
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
         result.push(
-          this.field[numLayer][this.inversionX(x)][this.inversionY(y)]
+          this.field[numLayer][this.inversionY(y)][this.inversionX(x)]
         );
       }
       result.push("\n");
