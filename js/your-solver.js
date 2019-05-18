@@ -256,14 +256,13 @@ class Board {
 
     let temp = "0123456789012345678901234567890";
 
-    let layer1 = this.boardAsString(Layers.LAYER1).split("\n");
-    let layer2 = this.boardAsString(Layers.LAYER2).split("\n");
+    const layer1 = this.boardAsString(Layers.LAYER1).split("\n");
+    const layer2 = this.boardAsString(Layers.LAYER2).split("\n");
+    const space = " ".repeat(layer1.length - 5);
 
-    // result.push(layer1);
-    // result.push(layer2);
+    result.push([layer1.join("\n"), space, layer2.join("\n")].join(""));
 
     // let numbers = temp.substring(0, layer1.length);
-    // let space = " ".repeat(layer1.length - 5);
     // let numbersLine = numbers + "   " + numbers;
     // let firstPart = " Layer1 " + space + " Layer2\n " + numbersLine;
 
@@ -350,7 +349,7 @@ class Board {
   }
 
   getAction() {
-    return;
+    return this.getExits();
   }
 
   getOtherHeroes() {
@@ -529,10 +528,11 @@ class Board {
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
         result.push(
-          this.field[numLayer][this.inversionY(y)][this.inversionX(x)]
+          this.field[numLayer][this.inversionX(x)][this.inversionY(y)]
         );
       }
+      result.push("\n");
     }
-    return result.join("\n") + "\n";
+    return "\n" + result.join("");
   }
 }
