@@ -33,6 +33,10 @@ client.connect(
 function whatToDo(boardStr) {
   let board = new Board(boardStr);
   console.log(board.toString());
+
+  const action = board.getAction();
+  console.log("Action: ", action);
+
   return Command.goRight();
 }
 
@@ -248,16 +252,20 @@ class Board {
       .join(", ");
   }
   toString() {
+    const result = [];
+
     let temp = "0123456789012345678901234567890";
+
     let layer1 = this.boardAsString(Layers.LAYER1).split("\n");
     let layer2 = this.boardAsString(Layers.LAYER2).split("\n");
 
-    let numbers = temp.substring(0, layer1.length);
-    let space = " ".repeat(layer1.length - 5);
-    let numbersLine = numbers + "   " + numbers;
-    let firstPart = " Layer1 " + space + " Layer2\n " + numbersLine;
+    // result.push(layer1);
+    // result.push(layer2);
 
-    console.log("numbers", numbers);
+    // let numbers = temp.substring(0, layer1.length);
+    // let space = " ".repeat(layer1.length - 5);
+    // let numbersLine = numbers + "   " + numbers;
+    // let firstPart = " Layer1 " + space + " Layer2\n " + numbersLine;
 
     const elements = {
       0: "Robots",
@@ -270,10 +278,9 @@ class Board {
       7: "Lasers"
     };
 
-    const result = [];
     for (let i = 0; i < layer1.length; ++i) {
-      let ii = this.size - 1 - i;
-      let index = (ii < 10 ? " " : "") + ii;
+      const ii = this.size - 1 - i;
+      const index = (ii < 10 ? " " : "") + ii;
 
       const element = elements[i];
       if (!element) continue;
@@ -322,10 +329,10 @@ class Board {
         }
       }
 
-      result.push(`${element}: ${value}`);
+      result.push(`${element} ${index}: ${value}`);
     }
 
-    return firstPart + "\n" + result.join("\n") + "\n" + numbersLine;
+    return result.join("\n");
   }
 
   getMe() {
@@ -340,6 +347,10 @@ class Board {
       return result[0];
     }
     return null;
+  }
+
+  getAction() {
+    return;
   }
 
   getOtherHeroes() {
@@ -522,6 +533,6 @@ class Board {
         );
       }
     }
-    return result.join("\n");
+    return result.join("\n") + "\n";
   }
 }
